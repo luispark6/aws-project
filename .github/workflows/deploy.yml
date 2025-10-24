@@ -20,7 +20,7 @@ jobs:
           terraform_version: 1.6.6  
          
       #sets up initailzition process
-      - name: Terraform Init
+      - name: Terraform Init 
         run: terraform init
         working-directory: terraform
 
