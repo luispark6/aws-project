@@ -40,13 +40,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 
-      - name: Import existing S3 buckets
-        run: |
-          terraform import aws_s3_bucket.raw_dataset raw_dataset || true
-          terraform import aws_s3_bucket.processed_dataset processed_dataset || true
-          terraform import aws_s3_bucket.trained_models trained_models || true
-
-        continue-on-error: true
+   
 
       #applies the changes
       - name: Terraform Apply
