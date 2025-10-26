@@ -1,4 +1,4 @@
-/*
+
 resource "aws_s3_bucket" "raw_dataset" {
   bucket = var.raw_dataset
   tags = {
@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "trained_models" {
     Environment = "Dev"
   }
 }
-*/
+
 
 
 
