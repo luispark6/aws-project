@@ -1,10 +1,10 @@
 
 terraform {
   backend "s3" {
-    bucket         = "my-terraform-state-bucket-unique-12345"
+    bucket         = "terraform-save-state-lp"
     key            = "terraform.tfstate"  # path in the bucket
     region         = "us-east-1"
-    dynamodb_table = "terraform-locks"
+    dynamodb_table = "terraform-state-lock"
     encrypt        = true
   }
   required_providers {
