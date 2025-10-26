@@ -50,8 +50,8 @@ resource "aws_iam_role" "lambda_role" {
 # Package the Lambda function code
 data "archive_file" "archived_process_data" {
   type        = "zip"
-  source_file = "${path.module}/../process_data.py"
-  output_path = "${path.module}/../process_data.zip"
+  source_file = "${path.module}/../lambda_functions/process_data.py"
+  output_path = "${path.module}/../lambda_functions/process_data.zip"
 }
 
 # Lambda function
