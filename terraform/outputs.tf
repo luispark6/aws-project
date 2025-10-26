@@ -1,4 +1,4 @@
-output "raw_dataset" {
+/* output "raw_dataset" {
   value = aws_s3_bucket.raw_dataset.bucket
 }
 output "bucket_arn1" {
@@ -18,3 +18,5 @@ output "trained_models" {
 output "bucket_arn3" {
   value = aws_s3_bucket.trained_models.arn
 }
+
+*/
