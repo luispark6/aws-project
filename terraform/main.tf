@@ -25,8 +25,6 @@ resource "aws_s3_bucket" "trained_models" {
 
 
 
-
-
 # IAM role for Lambda execution
 data "aws_iam_policy_document" "assume_role" {
   statement {
@@ -104,4 +102,33 @@ resource "aws_s3_bucket_notification" "s3_trigger" {
     aws_lambda_permission.allow_s3_invoke
   ]
 }
+
+
+
+
+
+
+# Package the Lambda function code
+data "archive_file" "archived_process_data" {
+  type        = "zip"
+  source_file = "${path.module}/../lambda_functions/process_data.py"
+  output_path = "${path.module}/../lambda_functions/archived_process_data.zip"
+} 
+
+# Lambda function
+resource "aws_lambda_function" "process_data" {
+  filename         = data.archive_file.archived_process_data.output_path
+  function_name    = "process_data"
+  role             = aws_iam_role.lambda_role.arn
+
+  source_code_hash = data.archive_file.archived_process_data.output_base64sha256
+
+  runtime = "python3.10"
+  handler = "process_data.lambda_handler"
+
+}
+
+
+
+
 
