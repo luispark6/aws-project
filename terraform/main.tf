@@ -57,7 +57,6 @@ resource "aws_iam_role_policy_attachment" "lambda_s3_access" {
 
 
 
-
 # Package the Lambda function code
 data "archive_file" "archived_stepfn" {
   type        = "zip"
@@ -104,18 +103,13 @@ resource "aws_s3_bucket_notification" "s3_trigger" {
 }
 
 
+################################################################ process_data lambda
 
-
-
-
-# Package the Lambda function code
 data "archive_file" "archived_process_data" {
   type        = "zip"
   source_file = "${path.module}/../lambda_functions/process_data.py"
   output_path = "${path.module}/../lambda_functions/archived_process_data.zip"
 } 
-
-# Lambda function
 resource "aws_lambda_function" "process_data" {
   filename         = data.archive_file.archived_process_data.output_path
   function_name    = "process_data"
@@ -127,8 +121,23 @@ resource "aws_lambda_function" "process_data" {
   handler = "process_data.lambda_handler"
 
 }
+################################################################
 
+data "archive_file" "archived_quality_check" {
+  type        = "zip"
+  source_file = "${path.module}/../lambda_functions/quality_check.py"
+  output_path = "${path.module}/../lambda_functions/archived_quality_check.zip"
+} 
+resource "aws_lambda_function" "quality_check" {
+  filename         = data.archive_file.archived_quality_check.output_path
+  function_name    = "quality_check"
+  role             = aws_iam_role.lambda_role.arn
 
+  source_code_hash = data.archive_file.archived_quality_check.output_base64sha256
 
+  runtime = "python3.10"
+  handler = "quality_check.lambda_handler"
 
+}
 
+################################################################
