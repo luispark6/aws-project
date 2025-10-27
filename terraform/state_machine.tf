@@ -1,6 +1,6 @@
 resource "aws_sfn_state_machine" "data_process" {
   name     = "data_process"
-  role_arn = aws_iam_role.stepfn_role.arn
+  role_arn = aws_iam_role.stepfn_execution_role.arn
 
   definition = <<EOF
 {
