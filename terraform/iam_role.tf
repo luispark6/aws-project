@@ -53,6 +53,13 @@ resource "aws_iam_role_policy_attachment" "lambda_s3_access" {
 }
 
 
+#allow step function to have access to lambda
+resource "aws_iam_role_policy_attachment" "stepfn_execution" {
+  role       = aws_iam_role.stepfn_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+}
+
+
 #allow lambda_role to use the step function. the lambda_stepfn_policy will allow this
 resource "aws_iam_role_policy_attachment" "lambda_stepfn_attach" {
   role       = aws_iam_role.lambda_role.name
@@ -76,11 +83,6 @@ resource "aws_iam_policy" "lambda_stepfn_policy" {
   })
 }
 
-#allow step function to have access to lambda
-resource "aws_iam_role_policy_attachment" "stepfn_execution" {
-  role       = aws_iam_role.stepfn_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
-}
 
 
 
