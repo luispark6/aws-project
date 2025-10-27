@@ -78,7 +78,7 @@ resource "aws_lambda_function" "process_data" {
   source_code_hash = data.archive_file.archived_process_data.output_base64sha256
 
   runtime = "python3.10"
-  handler = "lambda_handler"
+  handler = "process_data.lambda_handler"
 
 }
 
