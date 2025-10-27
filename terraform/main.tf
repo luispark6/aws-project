@@ -60,25 +60,23 @@ resource "aws_iam_role_policy_attachment" "lambda_s3_access" {
 
 
 
-
-
 # Package the Lambda function code
-data "archive_file" "archived_process_data" {
+data "archive_file" "archived_stepfn" {
   type        = "zip"
-  source_file = "${path.module}/../lambda_functions/process_data.py"
-  output_path = "${path.module}/../lambda_functions/process_data.zip"
+  source_file = "${path.module}/../lambda_functions/call_stepfn.py"
+  output_path = "${path.module}/../lambda_functions/archived_stepfn.zip"
 } 
 
 # Lambda function
-resource "aws_lambda_function" "process_data" {
-  filename         = data.archive_file.archived_process_data.output_path
-  function_name    = "process_data"
+resource "aws_lambda_function" "call_stepfn" {
+  filename         = data.archive_file.archived_stepfn.output_path
+  function_name    = "call_stepfn"
   role             = aws_iam_role.lambda_role.arn
 
-  source_code_hash = data.archive_file.archived_process_data.output_base64sha256
+  source_code_hash = data.archive_file.archived_stepfn.output_base64sha256
 
   runtime = "python3.10"
-  handler = "process_data.lambda_handler"
+  handler = "call_stepfn.lambda_handler"
 
 }
 
@@ -86,7 +84,7 @@ resource "aws_lambda_function" "process_data" {
 resource "aws_lambda_permission" "allow_s3_invoke" {
   statement_id  = "AllowExecutionFromS3Bucket"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.process_data.function_name
+  function_name = aws_lambda_function.call_stepfn.function_name
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.raw_dataset.arn  
 
@@ -97,7 +95,7 @@ resource "aws_s3_bucket_notification" "s3_trigger" {
   bucket = aws_s3_bucket.raw_dataset.id  # replace with your actual bucket
 
   lambda_function {
-    lambda_function_arn = aws_lambda_function.process_data.arn
+    lambda_function_arn = aws_lambda_function.call_stepfn.arn
     events              = ["s3:ObjectCreated:*"]
     #filter_suffix       = ".csv" # optional — triggers only for CSV uploads
   }
