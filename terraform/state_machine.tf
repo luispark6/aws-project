@@ -14,7 +14,8 @@ resource "aws_sfn_state_machine" "data_process" {
     },
     "QualityCheck": {
       "Type": "Task",
-      "Resource": "${aws_lambda_function.quality_check.arn}"
+      "Resource": "${aws_lambda_function.quality_check.arn}",
+      "End": true
     }
   }
 }
