@@ -59,11 +59,6 @@ resource "aws_iam_role_policy_attachment" "lambda_stepfn_attach" {
   policy_arn = aws_iam_policy.lambda_stepfn_policy.arn
 }
 
-#allow step function to have access to lambda
-resource "aws_iam_role_policy_attachment" "stepfn_execution" {
-  role       = aws_iam_role.stepfn_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
-}
 
 #the policy that allows lambda to start the execution of a state function
 resource "aws_iam_policy" "lambda_stepfn_policy" {
@@ -81,6 +76,11 @@ resource "aws_iam_policy" "lambda_stepfn_policy" {
   })
 }
 
+#allow step function to have access to lambda
+resource "aws_iam_role_policy_attachment" "stepfn_execution" {
+  role       = aws_iam_role.stepfn_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+}
 
 
 
