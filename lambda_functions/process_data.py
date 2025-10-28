@@ -4,7 +4,7 @@ import io
 import json
 from datetime import datetime
 import pandas as pd
-import janitor
+
 
 
 s3 = boto3.client("s3")
@@ -19,12 +19,16 @@ def lambda_handler(event, context):
 
     print(f"Uncleaned DataFrame shape {df.shape}")
 
-    df = (
-        df
-        .clean_names()      
-        .remove_empty()     
-        .drop_duplicates()  
+    df.columns = (
+        df.columns.str.strip()
+                  .str.lower()
+                  .str.replace(' ', '_')
     )
+
+    df = df.dropna(how='all')         
+    df = df.dropna(axis=1, how='all') 
+
+    df = df.drop_duplicates()
 
     print(f"Cleaned DataFrame shape: {df.shape}")
 
