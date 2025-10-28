@@ -1,6 +1,6 @@
 
 resource "aws_lambda_layer_version" "pandas_janitor" {
-  filename          = "${path.module}/../zipped_depends/process_data_depends.zip"
+  filename          = "${path.module}/../dependency_procces_data/process_data_depends.zip"
   layer_name        = "pandas-janitor"
   compatible_runtimes = ["python3.9"]
   description       = "Lambda layer with pandas and janitor"
