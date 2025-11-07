@@ -12,7 +12,7 @@ resource "aws_lambda_function" "process_data" {
   source_code_hash = data.archive_file.archived_process_data.output_base64sha256
   runtime = "python3.10"
   handler = "process_data.lambda_handler"
-  layers           = [arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p310-pandas:25, arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p310-numpy:16]
+  layers           = ["arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p310-pandas:25", "arn:aws:lambda:us-east-1:770693421928:layer:Klayers-p310-numpy:16"]
 }
 
 data "archive_file" "archived_quality_check" {
