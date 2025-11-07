@@ -1,6 +1,6 @@
 
 resource "aws_lambda_layer_version" "pandas_janitor" {
-  filename          = "${path.module}/../lambda-layer/lambda-layer.zip"
+  filename          = "${path.module}/../lambda-layer/numpy-layer.zip"
   layer_name        = "pandas-janitor"
   compatible_runtimes = ["python3.10"]
   description       = "Lambda layer with pandas"
