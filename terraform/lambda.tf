@@ -2,8 +2,8 @@
 resource "aws_lambda_layer_version" "pandas_janitor" {
   filename          = "${path.module}/../dependency_procces_data/process_data_depends.zip"
   layer_name        = "pandas-janitor"
-  compatible_runtimes = ["python3.9"]
-  description       = "Lambda layer with pandas and janitor"
+  compatible_runtimes = ["python3.10"]
+  description       = "Lambda layer with pandas"
 }
 
 
@@ -17,7 +17,7 @@ resource "aws_lambda_function" "process_data" {
   function_name    = "process_data"
   role             = aws_iam_role.lambda_role.arn
   source_code_hash = data.archive_file.archived_process_data.output_base64sha256
-  runtime = "python3.9"
+  runtime = "python3.10"
   handler = "process_data.lambda_handler"
   layers           = [aws_lambda_layer_version.pandas_janitor.arn]
 }
@@ -34,7 +34,7 @@ resource "aws_lambda_function" "quality_check" {
 
   source_code_hash = data.archive_file.archived_quality_check.output_base64sha256
 
-  runtime = "python3.9"
+  runtime = "python3.10"
   handler = "quality_check.lambda_handler"
 
 }
@@ -53,7 +53,7 @@ resource "aws_lambda_function" "call_stepfn" {
 
   source_code_hash = data.archive_file.archived_stepfn.output_base64sha256
 
-  runtime = "python3.9"
+  runtime = "python3.10"
   handler = "call_stepfn.lambda_handler"
   environment {
     variables = {
