@@ -6,7 +6,6 @@ resource "aws_lambda_layer_version" "pandas_janitor" {
   description       = "Lambda layer with pandas"
 }
 
-
 data "archive_file" "archived_process_data" {
   type        = "zip"
   source_file = "${path.module}/../lambda_functions/process_data.py"
